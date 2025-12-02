@@ -1,0 +1,35 @@
+[Unit]
+Description=BettaFish Multi-Agent Public Opinion Analysis System
+After=network.target mysql.service postgresql.service
+Wants=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/bettafish
+Environment="PATH=/var/www/bettafish/.venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="PYTHONUNBUFFERED=1"
+Environment="PYTHONIOENCODING=utf-8"
+Environment="PYTHONUTF8=1"
+
+# 使用虚拟环境中的 Python
+ExecStart=/var/www/bettafish/.venv/bin/python /var/www/bettafish/app.py
+
+# 重启策略
+Restart=always
+RestartSec=10
+
+# 资源限制（可根据服务器配置调整）
+# LimitNOFILE=65536
+# MemoryMax=4G
+# CPUQuota=200%
+
+# 日志配置
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=bettafish
+
+[Install]
+WantedBy=multi-user.target
+
